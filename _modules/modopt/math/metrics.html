@@ -1,0 +1,742 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>modopt.math.metrics &mdash; modopt 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> modopt
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">1. ModOpt Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modopt.html">2. modopt package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../modopt.html#subpackages">2.1. Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.base.html">2.1.1. modopt.base package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.interface.html">2.1.2. modopt.interface package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.math.html">2.1.3. modopt.math package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.opt.html">2.1.4. modopt.opt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.plot.html">2.1.5. modopt.plot package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.signal.html">2.1.6. modopt.signal package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modopt.html#submodules">2.2. Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.info.html">2.2.1. modopt.info module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modopt.html#module-modopt">2.3. Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">modopt</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>modopt.math.metrics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for modopt.math.metrics</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;METRICS</span>
+
+<span class="sd">This module contains classes of different metric functions for optimization.</span>
+
+<span class="sd">:Author: Benoir Sarthou</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="k">import</span> <span class="n">uniform_filter</span><span class="p">,</span> <span class="n">gaussian_filter</span>
+<span class="kn">from</span> <span class="nn">numpy.lib.arraypad</span> <span class="k">import</span> <span class="n">_validate_lengths</span>
+
+<span class="n">dtype_range</span> <span class="o">=</span> <span class="p">{</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">:</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span>
+               <span class="n">np</span><span class="o">.</span><span class="n">bool8</span><span class="p">:</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span>
+               <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+               <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">65535</span><span class="p">),</span>
+               <span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+               <span class="n">np</span><span class="o">.</span><span class="n">uint64</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">64</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+               <span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">128</span><span class="p">,</span> <span class="mi">127</span><span class="p">),</span>
+               <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">32768</span><span class="p">,</span> <span class="mi">32767</span><span class="p">),</span>
+               <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">**</span><span class="mi">31</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">31</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+               <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">**</span><span class="mi">63</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">63</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+               <span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+               <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+               <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)}</span>
+
+
+<div class="viewcode-block" id="crop"><a class="viewcode-back" href="../../../modopt.math.metrics.html#modopt.math.metrics.crop">[docs]</a><span class="k">def</span> <span class="nf">crop</span><span class="p">(</span><span class="n">ar</span><span class="p">,</span> <span class="n">crop_width</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;K&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Crop</span>
+
+<span class="sd">    Crop array `ar` by `crop_width` along each dimension.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ar : array-like of rank N</span>
+<span class="sd">        Input array.</span>
+<span class="sd">    crop_width : {sequence, int}</span>
+<span class="sd">        Number of values to remove from the edges of each axis.</span>
+<span class="sd">        ``((before_1, after_1),`` ... ``(before_N, after_N))`` specifies</span>
+<span class="sd">        unique crop widths at the start and end of each axis.</span>
+<span class="sd">        ``((before, after),)`` specifies a fixed start and end crop</span>
+<span class="sd">        for every axis.</span>
+<span class="sd">        ``(n,)`` or ``n`` for integer ``n`` is a shortcut for</span>
+<span class="sd">        before = after = ``n`` for all axes.</span>
+<span class="sd">    copy : bool, optional</span>
+<span class="sd">        If `True`, ensure the returned array is a contiguous copy. Normally,</span>
+<span class="sd">        a crop operation will return a discontiguous view of the underlying</span>
+<span class="sd">        input array.</span>
+<span class="sd">    order : {&#39;C&#39;, &#39;F&#39;, &#39;A&#39;, &#39;K&#39;}, optional</span>
+<span class="sd">        If ``copy==True``, control the memory layout of the copy. See</span>
+<span class="sd">        ``np.copy``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    cropped : array</span>
+<span class="sd">        The cropped array. If ``copy=False`` (default), this is a sliced</span>
+<span class="sd">        view of the input array.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ar</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">crops</span> <span class="o">=</span> <span class="n">_validate_lengths</span><span class="p">(</span><span class="n">ar</span><span class="p">,</span> <span class="n">crop_width</span><span class="p">)</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">ar</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">crops</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
+        <span class="n">cropped</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ar</span><span class="p">[</span><span class="n">slices</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cropped</span> <span class="o">=</span> <span class="n">ar</span><span class="p">[</span><span class="n">slices</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">cropped</span></div>
+
+
+<div class="viewcode-block" id="_compare_ssim"><a class="viewcode-back" href="../../../modopt.math.metrics.html#modopt.math.metrics._compare_ssim">[docs]</a><span class="k">def</span> <span class="nf">_compare_ssim</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">win_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">gradient</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                  <span class="n">data_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">multichannel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">gaussian_weights</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                  <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the mean structural similarity index between two images.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X, Y : ndarray</span>
+<span class="sd">        Image.  Any dimensionality.</span>
+<span class="sd">    win_size : int or None</span>
+<span class="sd">        The side-length of the sliding window used in comparison.  Must be an</span>
+<span class="sd">        odd value.  If `gaussian_weights` is True, this is ignored and the</span>
+<span class="sd">        window size will depend on `sigma`.</span>
+<span class="sd">    gradient : bool, optional</span>
+<span class="sd">        If True, also return the gradient with respect to Y.</span>
+<span class="sd">    data_range : float, optional</span>
+<span class="sd">        The data range of the input image (distance between minimum and</span>
+<span class="sd">        maximum possible values).  By default, this is estimated from the image</span>
+<span class="sd">        data-type.</span>
+<span class="sd">    multichannel : bool, optional</span>
+<span class="sd">        If True, treat the last dimension of the array as channels. Similarity</span>
+<span class="sd">        calculations are done independently for each channel then averaged.</span>
+<span class="sd">    gaussian_weights : bool, optional</span>
+<span class="sd">        If True, each patch has its mean and variance spatially weighted by a</span>
+<span class="sd">        normalized Gaussian kernel of width sigma=1.5.</span>
+<span class="sd">    full : bool, optional</span>
+<span class="sd">        If True, return the full structural similarity image instead of the</span>
+<span class="sd">        mean value.</span>
+
+<span class="sd">    Other Parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    use_sample_covariance : bool</span>
+<span class="sd">        if True, normalize covariances by N-1 rather than, N where N is the</span>
+<span class="sd">        number of pixels within the sliding window.</span>
+<span class="sd">    K1 : float</span>
+<span class="sd">        algorithm parameter, K1 (small constant, see [1]_)</span>
+<span class="sd">    K2 : float</span>
+<span class="sd">        algorithm parameter, K2 (small constant, see [1]_)</span>
+<span class="sd">    sigma : float</span>
+<span class="sd">        sigma for the Gaussian when `gaussian_weights` is True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mssim : float</span>
+<span class="sd">        The mean structural similarity over the image.</span>
+<span class="sd">    grad : ndarray</span>
+<span class="sd">        The gradient of the structural similarity index between X and Y [2]_.</span>
+<span class="sd">        This is only returned if `gradient` is set to True.</span>
+<span class="sd">    S : ndarray</span>
+<span class="sd">        The full SSIM image.  This is only returned if `full` is set to True.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    To match the implementation of Wang et. al. [1]_, set `gaussian_weights`</span>
+<span class="sd">    to True, `sigma` to 1.5, and `use_sample_covariance` to False.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Wang, Z., Bovik, A. C., Sheikh, H. R., &amp; Simoncelli, E. P.</span>
+<span class="sd">       (2004). Image quality assessment: From error visibility to</span>
+<span class="sd">       structural similarity. IEEE Transactions on Image Processing,</span>
+<span class="sd">       13, 600-612.</span>
+<span class="sd">       https://ece.uwaterloo.ca/~z70wang/publications/ssim.pdf,</span>
+<span class="sd">       DOI:10.1109/TIP.2003.819861</span>
+<span class="sd">    .. [2] Avanaki, A. N. (2009). Exact global histogram specification</span>
+<span class="sd">       optimized for structural similarity. Optical Review, 16, 613-621.</span>
+<span class="sd">       http://arxiv.org/abs/0901.0065,</span>
+<span class="sd">       DOI:10.1007/s10043-009-0119-z</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">X</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">Y</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input images must have the same dtype.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input images must have the same dimensions.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">multichannel</span><span class="p">:</span>
+        <span class="c1"># loop over channels</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">win_size</span><span class="o">=</span><span class="n">win_size</span><span class="p">,</span>
+                    <span class="n">gradient</span><span class="o">=</span><span class="n">gradient</span><span class="p">,</span>
+                    <span class="n">data_range</span><span class="o">=</span><span class="n">data_range</span><span class="p">,</span>
+                    <span class="n">multichannel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">gaussian_weights</span><span class="o">=</span><span class="n">gaussian_weights</span><span class="p">,</span>
+                    <span class="n">full</span><span class="o">=</span><span class="n">full</span><span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">nch</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">mssim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">nch</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">gradient</span><span class="p">:</span>
+            <span class="n">G</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
+            <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nch</span><span class="p">):</span>
+            <span class="n">ch_result</span> <span class="o">=</span> <span class="n">compare_ssim</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">ch</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">ch</span><span class="p">],</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">gradient</span> <span class="ow">and</span> <span class="n">full</span><span class="p">:</span>
+                <span class="n">mssim</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">ch</span><span class="p">],</span> <span class="n">G</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">ch</span><span class="p">],</span> <span class="n">S</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">ch</span><span class="p">]</span> <span class="o">=</span> <span class="n">ch_result</span>
+            <span class="k">elif</span> <span class="n">gradient</span><span class="p">:</span>
+                <span class="n">mssim</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">ch</span><span class="p">],</span> <span class="n">G</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">ch</span><span class="p">]</span> <span class="o">=</span> <span class="n">ch_result</span>
+            <span class="k">elif</span> <span class="n">full</span><span class="p">:</span>
+                <span class="n">mssim</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">ch</span><span class="p">],</span> <span class="n">S</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">ch</span><span class="p">]</span> <span class="o">=</span> <span class="n">ch_result</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mssim</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">ch</span><span class="p">]</span> <span class="o">=</span> <span class="n">ch_result</span>
+        <span class="n">mssim</span> <span class="o">=</span> <span class="n">mssim</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">gradient</span> <span class="ow">and</span> <span class="n">full</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mssim</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">S</span>
+        <span class="k">elif</span> <span class="n">gradient</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mssim</span><span class="p">,</span> <span class="n">G</span>
+        <span class="k">elif</span> <span class="n">full</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mssim</span><span class="p">,</span> <span class="n">S</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mssim</span>
+
+    <span class="n">K1</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;K1&#39;</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+    <span class="n">K2</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;K2&#39;</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">)</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">K1</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;K1 must be positive&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">K2</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;K2 must be positive&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sigma</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;sigma must be positive&quot;</span><span class="p">)</span>
+    <span class="n">use_sample_covariance</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;use_sample_covariance&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">win_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">gaussian_weights</span><span class="p">:</span>
+            <span class="n">win_size</span> <span class="o">=</span> <span class="mi">11</span>  <span class="c1"># 11 to match Wang et. al. 2004</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">win_size</span> <span class="o">=</span> <span class="mi">7</span>   <span class="c1"># backwards compatibility</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="n">win_size</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;win_size exceeds image extent.  If the input is a multichannel &quot;</span>
+            <span class="s2">&quot;(color) image, set multichannel=True.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">win_size</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Window size must be odd.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">data_range</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dmin</span><span class="p">,</span> <span class="n">dmax</span> <span class="o">=</span> <span class="n">dtype_range</span><span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">]</span>
+        <span class="n">data_range</span> <span class="o">=</span> <span class="n">dmax</span> <span class="o">-</span> <span class="n">dmin</span>
+
+    <span class="n">ndim</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">ndim</span>
+
+    <span class="k">if</span> <span class="n">gaussian_weights</span><span class="p">:</span>
+        <span class="c1"># sigma = 1.5 to approximately match filter in Wang et. al. 2004</span>
+        <span class="c1"># this ends up giving a 13-tap rather than 11-tap Gaussian</span>
+        <span class="n">filter_func</span> <span class="o">=</span> <span class="n">gaussian_filter</span>
+        <span class="n">filter_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;sigma&#39;</span><span class="p">:</span> <span class="n">sigma</span><span class="p">}</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">filter_func</span> <span class="o">=</span> <span class="n">uniform_filter</span>
+        <span class="n">filter_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="n">win_size</span><span class="p">}</span>
+
+    <span class="c1"># ndimage filters need floating point data</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="n">NP</span> <span class="o">=</span> <span class="n">win_size</span> <span class="o">**</span> <span class="n">ndim</span>
+
+    <span class="c1"># filter has already normalized by NP</span>
+    <span class="k">if</span> <span class="n">use_sample_covariance</span><span class="p">:</span>
+        <span class="n">cov_norm</span> <span class="o">=</span> <span class="n">NP</span> <span class="o">/</span> <span class="p">(</span><span class="n">NP</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># sample covariance</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cov_norm</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># population covariance to match Wang et. al. 2004</span>
+
+    <span class="c1"># compute (weighted) means</span>
+    <span class="n">ux</span> <span class="o">=</span> <span class="n">filter_func</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">filter_args</span><span class="p">)</span>
+    <span class="n">uy</span> <span class="o">=</span> <span class="n">filter_func</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="o">**</span><span class="n">filter_args</span><span class="p">)</span>
+
+    <span class="c1"># compute (weighted) variances and covariances</span>
+    <span class="n">uxx</span> <span class="o">=</span> <span class="n">filter_func</span><span class="p">(</span><span class="n">X</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">filter_args</span><span class="p">)</span>
+    <span class="n">uyy</span> <span class="o">=</span> <span class="n">filter_func</span><span class="p">(</span><span class="n">Y</span> <span class="o">*</span> <span class="n">Y</span><span class="p">,</span> <span class="o">**</span><span class="n">filter_args</span><span class="p">)</span>
+    <span class="n">uxy</span> <span class="o">=</span> <span class="n">filter_func</span><span class="p">(</span><span class="n">X</span> <span class="o">*</span> <span class="n">Y</span><span class="p">,</span> <span class="o">**</span><span class="n">filter_args</span><span class="p">)</span>
+    <span class="n">vx</span> <span class="o">=</span> <span class="n">cov_norm</span> <span class="o">*</span> <span class="p">(</span><span class="n">uxx</span> <span class="o">-</span> <span class="n">ux</span> <span class="o">*</span> <span class="n">ux</span><span class="p">)</span>
+    <span class="n">vy</span> <span class="o">=</span> <span class="n">cov_norm</span> <span class="o">*</span> <span class="p">(</span><span class="n">uyy</span> <span class="o">-</span> <span class="n">uy</span> <span class="o">*</span> <span class="n">uy</span><span class="p">)</span>
+    <span class="n">vxy</span> <span class="o">=</span> <span class="n">cov_norm</span> <span class="o">*</span> <span class="p">(</span><span class="n">uxy</span> <span class="o">-</span> <span class="n">ux</span> <span class="o">*</span> <span class="n">uy</span><span class="p">)</span>
+
+    <span class="n">R</span> <span class="o">=</span> <span class="n">data_range</span>
+    <span class="n">C1</span> <span class="o">=</span> <span class="p">(</span><span class="n">K1</span> <span class="o">*</span> <span class="n">R</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">C2</span> <span class="o">=</span> <span class="p">(</span><span class="n">K2</span> <span class="o">*</span> <span class="n">R</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="n">A1</span><span class="p">,</span> <span class="n">A2</span><span class="p">,</span> <span class="n">B1</span><span class="p">,</span> <span class="n">B2</span> <span class="o">=</span> <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ux</span> <span class="o">*</span> <span class="n">uy</span> <span class="o">+</span> <span class="n">C1</span><span class="p">,</span>
+                       <span class="mi">2</span> <span class="o">*</span> <span class="n">vxy</span> <span class="o">+</span> <span class="n">C2</span><span class="p">,</span>
+                       <span class="n">ux</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">uy</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">C1</span><span class="p">,</span>
+                       <span class="n">vx</span> <span class="o">+</span> <span class="n">vy</span> <span class="o">+</span> <span class="n">C2</span><span class="p">))</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">B1</span> <span class="o">*</span> <span class="n">B2</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="p">(</span><span class="n">A1</span> <span class="o">*</span> <span class="n">A2</span><span class="p">)</span> <span class="o">/</span> <span class="n">D</span>
+
+    <span class="c1"># to avoid edge effects will ignore filter radius strip around edges</span>
+    <span class="n">pad</span> <span class="o">=</span> <span class="p">(</span><span class="n">win_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+    <span class="c1"># compute (weighted) mean of ssim</span>
+    <span class="n">mssim</span> <span class="o">=</span> <span class="n">crop</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">pad</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">gradient</span><span class="p">:</span>
+        <span class="c1"># The following is Eqs. 7-8 of Avanaki 2009.</span>
+        <span class="n">grad</span> <span class="o">=</span> <span class="n">filter_func</span><span class="p">(</span><span class="n">A1</span> <span class="o">/</span> <span class="n">D</span><span class="p">,</span> <span class="o">**</span><span class="n">filter_args</span><span class="p">)</span> <span class="o">*</span> <span class="n">X</span>
+        <span class="n">grad</span> <span class="o">+=</span> <span class="n">filter_func</span><span class="p">(</span><span class="o">-</span><span class="n">S</span> <span class="o">/</span> <span class="n">B2</span><span class="p">,</span> <span class="o">**</span><span class="n">filter_args</span><span class="p">)</span> <span class="o">*</span> <span class="n">Y</span>
+        <span class="n">grad</span> <span class="o">+=</span> <span class="n">filter_func</span><span class="p">((</span><span class="n">ux</span> <span class="o">*</span> <span class="p">(</span><span class="n">A2</span> <span class="o">-</span> <span class="n">A1</span><span class="p">)</span> <span class="o">-</span> <span class="n">uy</span> <span class="o">*</span> <span class="p">(</span><span class="n">B2</span> <span class="o">-</span> <span class="n">B1</span><span class="p">)</span> <span class="o">*</span> <span class="n">S</span><span class="p">)</span> <span class="o">/</span> <span class="n">D</span><span class="p">,</span>
+                            <span class="o">**</span><span class="n">filter_args</span><span class="p">)</span>
+        <span class="n">grad</span> <span class="o">*=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="n">X</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mssim</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">S</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mssim</span><span class="p">,</span> <span class="n">grad</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mssim</span><span class="p">,</span> <span class="n">S</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mssim</span></div>
+
+
+<div class="viewcode-block" id="min_max_normalize"><a class="viewcode-back" href="../../../modopt.math.metrics.html#modopt.math.metrics.min_max_normalize">[docs]</a><span class="k">def</span> <span class="nf">min_max_normalize</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Centre and normalize a given array.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    img: np.ndarray</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">min_img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">max_img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">img</span> <span class="o">-</span> <span class="n">min_img</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">max_img</span> <span class="o">-</span> <span class="n">min_img</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_preprocess_input"><a class="viewcode-back" href="../../../modopt.math.metrics.html#modopt.math.metrics._preprocess_input">[docs]</a><span class="k">def</span> <span class="nf">_preprocess_input</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper to the metric</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ref : np.ndarray</span>
+<span class="sd">        the reference image</span>
+
+<span class="sd">    test : np.ndarray</span>
+<span class="sd">        the tested image</span>
+
+<span class="sd">    mask : np.ndarray, optional</span>
+<span class="sd">        the mask for the ROI</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Compute the metric only on magnetude.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ssim: float, the snr</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">test</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">ref</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
+    <span class="n">test</span> <span class="o">=</span> <span class="n">min_max_normalize</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="n">min_max_normalize</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;mask should be None, or a np.ndarray,&quot;</span>
+                         <span class="s2">&quot; got &#39;</span><span class="si">{0}</span><span class="s2">&#39; instead.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mask</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span></div>
+
+
+<div class="viewcode-block" id="ssim"><a class="viewcode-back" href="../../../modopt.math.metrics.html#modopt.math.metrics.ssim">[docs]</a><span class="k">def</span> <span class="nf">ssim</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Structural Similarity (SSIM)</span>
+
+<span class="sd">    Calculate the SSIM between a test image and a reference image.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ref : np.ndarray</span>
+<span class="sd">        the reference image</span>
+
+<span class="sd">    test : np.ndarray</span>
+<span class="sd">        the tested image</span>
+
+<span class="sd">    mask : np.ndarray, optional</span>
+<span class="sd">        the mask for the ROI</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Compute the metric only on magnetude.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ssim: float, the snr</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">_preprocess_input</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+    <span class="n">assim</span><span class="p">,</span> <span class="n">ssim</span> <span class="o">=</span> <span class="n">_compare_ssim</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">assim</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">mask</span> <span class="o">*</span> <span class="n">ssim</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="snr"><a class="viewcode-back" href="../../../modopt.math.metrics.html#modopt.math.metrics.snr">[docs]</a><span class="k">def</span> <span class="nf">snr</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Signal-to-Noise Ratio (SNR)</span>
+
+<span class="sd">    Calculate the SNR between a test image and a reference image.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ref: np.ndarray</span>
+<span class="sd">        the reference image</span>
+
+<span class="sd">    test: np.ndarray</span>
+<span class="sd">        the tested image</span>
+
+<span class="sd">    mask: np.ndarray, optional</span>
+<span class="sd">        the mask for the ROI</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Compute the metric only on magnetude.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    snr: float, the snr</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">_preprocess_input</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">*</span> <span class="n">test</span>
+
+    <span class="n">num</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+    <span class="n">deno</span> <span class="o">=</span> <span class="n">mse</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">num</span> <span class="o">/</span> <span class="n">deno</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="psnr"><a class="viewcode-back" href="../../../modopt.math.metrics.html#modopt.math.metrics.psnr">[docs]</a><span class="k">def</span> <span class="nf">psnr</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Peak Signal-to-Noise Ratio (PSNR)</span>
+
+<span class="sd">    Calculate the PSNR between a test image and a reference image.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ref : np.ndarray</span>
+<span class="sd">        the reference image</span>
+
+<span class="sd">    test : np.ndarray</span>
+<span class="sd">        the tested image</span>
+
+<span class="sd">    mask : np.ndarray, optional</span>
+<span class="sd">        the mask for the ROI</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Compute the metric only on magnetude.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    psnr: float, the psnr</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">_preprocess_input</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">*</span> <span class="n">test</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">*</span> <span class="n">ref</span>
+
+    <span class="n">num</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+    <span class="n">deno</span> <span class="o">=</span> <span class="n">mse</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">num</span> <span class="o">/</span> <span class="n">deno</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mse"><a class="viewcode-back" href="../../../modopt.math.metrics.html#modopt.math.metrics.mse">[docs]</a><span class="k">def</span> <span class="nf">mse</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Mean Squared Error (MSE)</span>
+
+<span class="sd">    Calculate the MSE between a test image and a reference image.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ref : np.ndarray</span>
+<span class="sd">        the reference image</span>
+
+<span class="sd">    test : np.ndarray</span>
+<span class="sd">        the tested image</span>
+
+<span class="sd">    mask : np.ndarray, optional</span>
+<span class="sd">        the mask for the ROI</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Compute the metric only on magnetude.</span>
+
+<span class="sd">    1/N * |ref - test|_2</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mse: float, the mse</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">_preprocess_input</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">*</span> <span class="n">test</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">*</span> <span class="n">ref</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">test</span> <span class="o">-</span> <span class="n">ref</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="nrmse"><a class="viewcode-back" href="../../../modopt.math.metrics.html#modopt.math.metrics.nrmse">[docs]</a><span class="k">def</span> <span class="nf">nrmse</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return NRMSE</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ref : np.ndarray</span>
+<span class="sd">        the reference image</span>
+
+<span class="sd">    test : np.ndarray</span>
+<span class="sd">        the tested image</span>
+
+<span class="sd">    mask : np.ndarray, optional</span>
+<span class="sd">        the mask for the ROI</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Compute the metric only on magnitude.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nrmse: float, the nrmse</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">_preprocess_input</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">*</span> <span class="n">test</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">*</span> <span class="n">ref</span>
+
+    <span class="n">num</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mse</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">ref</span><span class="p">))</span>
+    <span class="n">deno</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">test</span><span class="p">))))</span>
+
+    <span class="k">return</span> <span class="n">num</span> <span class="o">/</span> <span class="n">deno</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Samuel Farrens.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

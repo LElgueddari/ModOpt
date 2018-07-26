@@ -1,0 +1,434 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.1.1.1.2. modopt.base.observable module &mdash; modopt 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2.1.1.1.3. modopt.base.transform module" href="modopt.base.transform.html" />
+    <link rel="prev" title="2.1.1.1.1. modopt.base.np_adjust module" href="modopt.base.np_adjust.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> modopt
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="examples.html">1. ModOpt Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modopt.html">2. modopt package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="modopt.html#subpackages">2.1. Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="modopt.base.html">2.1.1. modopt.base package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modopt.interface.html">2.1.2. modopt.interface package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modopt.math.html">2.1.3. modopt.math package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modopt.opt.html">2.1.4. modopt.opt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modopt.plot.html">2.1.5. modopt.plot package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modopt.signal.html">2.1.6. modopt.signal package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modopt.html#submodules">2.2. Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modopt.info.html">2.2.1. modopt.info module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modopt.html#module-modopt">2.3. Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">modopt</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modopt.html">2. modopt package</a> &raquo;</li>
+        
+          <li><a href="modopt.base.html">2.1.1. modopt.base package</a> &raquo;</li>
+        
+      <li>2.1.1.1.2. modopt.base.observable module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/modopt.base.observable.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-modopt.base.observable">
+<span id="modopt-base-observable-module"></span><h1>2.1.1.1.2. modopt.base.observable module<a class="headerlink" href="#module-modopt.base.observable" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="modopt.base.observable.SignalObject">
+<em class="property">class </em><code class="descclassname">modopt.base.observable.</code><code class="descname">SignalObject</code><a class="reference internal" href="_modules/modopt/base/observable.html#SignalObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.base.observable.SignalObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Dummy class for signals.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="modopt.base.observable.Observable">
+<em class="property">class </em><code class="descclassname">modopt.base.observable.</code><code class="descname">Observable</code><span class="sig-paren">(</span><em>signals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/base/observable.html#Observable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.base.observable.Observable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for observable classes.</p>
+<p>This class defines a simple interface to add or remove observers
+on an object.</p>
+<p>Initilize the Observable class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>signals</strong> (<em>list of str</em>) – the allowed signals.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="modopt.base.observable.Observable.add_observer">
+<code class="descname">add_observer</code><span class="sig-paren">(</span><em>signal</em>, <em>observer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/base/observable.html#Observable.add_observer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.base.observable.Observable.add_observer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an observer to the object.</p>
+<p>Raise an exception if the signal is not allowed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>signal</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – a valid signal.</li>
+<li><strong>observer</strong> (<em>&#64;func</em>) – a function that will be called when the signal is emitted.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modopt.base.observable.Observable.remove_observer">
+<code class="descname">remove_observer</code><span class="sig-paren">(</span><em>signal</em>, <em>observer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/base/observable.html#Observable.remove_observer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.base.observable.Observable.remove_observer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove an observer from the object.</p>
+<p>Raise an eception if the signal is not allowed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>signal</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – a valid signal.</li>
+<li><strong>observer</strong> (<em>&#64;func</em>) – an obervation function to be removed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modopt.base.observable.Observable.notify_observers">
+<code class="descname">notify_observers</code><span class="sig-paren">(</span><em>signal</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/base/observable.html#Observable.notify_observers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.base.observable.Observable.notify_observers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify observers of a given signal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>signal</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – a valid signal.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – the parameters that will be sent to the observers.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>out</strong> – False if a notification is in progress, otherwise True.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modopt.base.observable.Observable._get_allowed_signals">
+<code class="descname">_get_allowed_signals</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/base/observable.html#Observable._get_allowed_signals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.base.observable.Observable._get_allowed_signals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Events allowed for the current object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="modopt.base.observable.Observable.allowed_signals">
+<code class="descname">allowed_signals</code><a class="headerlink" href="#modopt.base.observable.Observable.allowed_signals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Events allowed for the current object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modopt.base.observable.Observable._is_allowed_signal">
+<code class="descname">_is_allowed_signal</code><span class="sig-paren">(</span><em>signal</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/base/observable.html#Observable._is_allowed_signal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.base.observable.Observable._is_allowed_signal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a signal is valid.</p>
+<p>Raise an exception if the signal is not allowed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>signal</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – a signal.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modopt.base.observable.Observable._add_observer">
+<code class="descname">_add_observer</code><span class="sig-paren">(</span><em>signal</em>, <em>observer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/base/observable.html#Observable._add_observer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.base.observable.Observable._add_observer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Associate an observer to a valid signal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>signal</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – a valid signal.</li>
+<li><strong>observer</strong> (<em>&#64;func</em>) – an obervation function.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modopt.base.observable.Observable._remove_observer">
+<code class="descname">_remove_observer</code><span class="sig-paren">(</span><em>signal</em>, <em>observer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/base/observable.html#Observable._remove_observer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.base.observable.Observable._remove_observer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove an observer to a valid signal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>signal</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – a valid signal.</li>
+<li><strong>observer</strong> (<em>&#64;func</em>) – an obervation function to be removed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="modopt.base.observable.MetricObserver">
+<em class="property">class </em><code class="descclassname">modopt.base.observable.</code><code class="descname">MetricObserver</code><span class="sig-paren">(</span><em>name</em>, <em>metric</em>, <em>mapping</em>, <em>cst_kwargs</em>, <em>early_stopping=False</em>, <em>wind=6</em>, <em>eps=0.001</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/base/observable.html#MetricObserver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.base.observable.MetricObserver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Wrapper of the metric to the observer object notify by the Observable
+class.</p>
+<p>Init.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>,</em>) – the name of the metric</li>
+<li><strong>metric</strong> (<em>&#64;func</em><em>,</em>) – metric function with this precise signature func(test, ref).</li>
+<li><strong>mapping</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>,</em>) – define the mapping between the iterate variable and the metric
+keyword: {‘x_new’:’name_var_1’, ‘y_new’:’name_var_2’}. To cancel
+the need of a variable, the dict value should be None:
+‘y_new’:None.</li>
+<li><strong>cst_kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>,</em>) – Keywords arguments of constant argument for the metric computation.</li>
+<li><strong>early_stopping</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>(</em><em>default False</em><em>)</em>) – if True it will compute the convergence flag.</li>
+<li><strong>wind</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>(</em><em>default 6</em><em>)</em>) – window on with the convergence criteria is compute.</li>
+<li><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>(</em><em>default 1.0e-3</em><em>)</em>) – the level of criteria of convergence.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="modopt.base.observable.MetricObserver.is_converge">
+<code class="descname">is_converge</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/base/observable.html#MetricObserver.is_converge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.base.observable.MetricObserver.is_converge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the convergence criteria is matched.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modopt.base.observable.MetricObserver.retrieve_metrics">
+<code class="descname">retrieve_metrics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/base/observable.html#MetricObserver.retrieve_metrics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.base.observable.MetricObserver.retrieve_metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the convergence metrics saved with the corresponding
+iterations.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modopt.base.transform.html" class="btn btn-neutral float-right" title="2.1.1.1.3. modopt.base.transform module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modopt.base.np_adjust.html" class="btn btn-neutral" title="2.1.1.1.1. modopt.base.np_adjust module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Samuel Farrens.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,560 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.1.3.1.3. modopt.math.metrics module &mdash; modopt 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2.1.3.1.4. modopt.math.stats module" href="modopt.math.stats.html" />
+    <link rel="prev" title="2.1.3.1.2. modopt.math.matrix module" href="modopt.math.matrix.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> modopt
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="examples.html">1. ModOpt Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modopt.html">2. modopt package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="modopt.html#subpackages">2.1. Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="modopt.base.html">2.1.1. modopt.base package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modopt.interface.html">2.1.2. modopt.interface package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="modopt.math.html">2.1.3. modopt.math package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modopt.opt.html">2.1.4. modopt.opt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modopt.plot.html">2.1.5. modopt.plot package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modopt.signal.html">2.1.6. modopt.signal package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modopt.html#submodules">2.2. Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modopt.info.html">2.2.1. modopt.info module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modopt.html#module-modopt">2.3. Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">modopt</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modopt.html">2. modopt package</a> &raquo;</li>
+        
+          <li><a href="modopt.math.html">2.1.3. modopt.math package</a> &raquo;</li>
+        
+      <li>2.1.3.1.3. modopt.math.metrics module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/modopt.math.metrics.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-modopt.math.metrics">
+<span id="modopt-math-metrics-module"></span><h1>2.1.3.1.3. modopt.math.metrics module<a class="headerlink" href="#module-modopt.math.metrics" title="Permalink to this headline">¶</a></h1>
+<p>METRICS</p>
+<p>This module contains classes of different metric functions for optimization.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Benoir Sarthou</td>
+</tr>
+</tbody>
+</table>
+<dl class="function">
+<dt id="modopt.math.metrics.crop">
+<code class="descclassname">modopt.math.metrics.</code><code class="descname">crop</code><span class="sig-paren">(</span><em>ar</em>, <em>crop_width</em>, <em>copy=False</em>, <em>order='K'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/math/metrics.html#crop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.math.metrics.crop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crop</p>
+<p>Crop array <cite>ar</cite> by <cite>crop_width</cite> along each dimension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ar</strong> (<em>array-like of rank N</em>) – Input array.</li>
+<li><strong>crop_width</strong> (<em>{sequence</em><em>, </em><em>int}</em>) – Number of values to remove from the edges of each axis.
+<code class="docutils literal notranslate"><span class="pre">((before_1,</span> <span class="pre">after_1),</span></code> … <code class="docutils literal notranslate"><span class="pre">(before_N,</span> <span class="pre">after_N))</span></code> specifies
+unique crop widths at the start and end of each axis.
+<code class="docutils literal notranslate"><span class="pre">((before,</span> <span class="pre">after),)</span></code> specifies a fixed start and end crop
+for every axis.
+<code class="docutils literal notranslate"><span class="pre">(n,)</span></code> or <code class="docutils literal notranslate"><span class="pre">n</span></code> for integer <code class="docutils literal notranslate"><span class="pre">n</span></code> is a shortcut for
+before = after = <code class="docutils literal notranslate"><span class="pre">n</span></code> for all axes.</li>
+<li><strong>copy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – If <cite>True</cite>, ensure the returned array is a contiguous copy. Normally,
+a crop operation will return a discontiguous view of the underlying
+input array.</li>
+<li><strong>order</strong> (<em>{'C'</em><em>, </em><em>'F'</em><em>, </em><em>'A'</em><em>, </em><em>'K'}</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">copy==True</span></code>, control the memory layout of the copy. See
+<code class="docutils literal notranslate"><span class="pre">np.copy</span></code>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>cropped</strong> – The cropped array. If <code class="docutils literal notranslate"><span class="pre">copy=False</span></code> (default), this is a sliced
+view of the input array.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="modopt.math.metrics._compare_ssim">
+<code class="descclassname">modopt.math.metrics.</code><code class="descname">_compare_ssim</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em>, <em>win_size=None</em>, <em>gradient=False</em>, <em>data_range=None</em>, <em>multichannel=False</em>, <em>gaussian_weights=False</em>, <em>full=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/math/metrics.html#_compare_ssim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.math.metrics._compare_ssim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the mean structural similarity index between two images.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Y</strong> (<em>X</em><em>,</em>) – Image.  Any dimensionality.</li>
+<li><strong>win_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – The side-length of the sliding window used in comparison.  Must be an
+odd value.  If <cite>gaussian_weights</cite> is True, this is ignored and the
+window size will depend on <cite>sigma</cite>.</li>
+<li><strong>gradient</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, also return the gradient with respect to Y.</li>
+<li><strong>data_range</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>optional</em>) – The data range of the input image (distance between minimum and
+maximum possible values).  By default, this is estimated from the image
+data-type.</li>
+<li><strong>multichannel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, treat the last dimension of the array as channels. Similarity
+calculations are done independently for each channel then averaged.</li>
+<li><strong>gaussian_weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, each patch has its mean and variance spatially weighted by a
+normalized Gaussian kernel of width sigma=1.5.</li>
+<li><strong>full</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, return the full structural similarity image instead of the
+mean value.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>use_sample_covariance</strong> (<em>bool</em>) – if True, normalize covariances by N-1 rather than, N where N is the
+number of pixels within the sliding window.</li>
+<li><strong>K1</strong> (<em>float</em>) – algorithm parameter, K1 (small constant, see <a class="reference internal" href="#r2e3c3ea5ba46-1" id="id1">[1]</a>)</li>
+<li><strong>K2</strong> (<em>float</em>) – algorithm parameter, K2 (small constant, see <a class="reference internal" href="#r2e3c3ea5ba46-1" id="id2">[1]</a>)</li>
+<li><strong>sigma</strong> (<em>float</em>) – sigma for the Gaussian when <cite>gaussian_weights</cite> is True.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>mssim</strong> (<em>float</em>) – The mean structural similarity over the image.</li>
+<li><strong>grad</strong> (<em>ndarray</em>) – The gradient of the structural similarity index between X and Y <a class="reference internal" href="#r2e3c3ea5ba46-2" id="id3">[2]</a>.
+This is only returned if <cite>gradient</cite> is set to True.</li>
+<li><strong>S</strong> (<em>ndarray</em>) – The full SSIM image.  This is only returned if <cite>full</cite> is set to True.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>To match the implementation of Wang et. al. <a class="reference internal" href="#r2e3c3ea5ba46-1" id="id4">[1]</a>, set <cite>gaussian_weights</cite>
+to True, <cite>sigma</cite> to 1.5, and <cite>use_sample_covariance</cite> to False.</p>
+<p class="rubric">References</p>
+<table class="docutils citation" frame="void" id="r2e3c3ea5ba46-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id2">2</a>, <a class="fn-backref" href="#id4">3</a>)</em> Wang, Z., Bovik, A. C., Sheikh, H. R., &amp; Simoncelli, E. P.
+(2004). Image quality assessment: From error visibility to
+structural similarity. IEEE Transactions on Image Processing,
+13, 600-612.
+<a class="reference external" href="https://ece.uwaterloo.ca/~z70wang/publications/ssim.pdf">https://ece.uwaterloo.ca/~z70wang/publications/ssim.pdf</a>,
+DOI:10.1109/TIP.2003.819861</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="r2e3c3ea5ba46-2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>Avanaki, A. N. (2009). Exact global histogram specification
+optimized for structural similarity. Optical Review, 16, 613-621.
+<a class="reference external" href="http://arxiv.org/abs/0901.0065">http://arxiv.org/abs/0901.0065</a>,
+DOI:10.1007/s10043-009-0119-z</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="modopt.math.metrics.min_max_normalize">
+<code class="descclassname">modopt.math.metrics.</code><code class="descname">min_max_normalize</code><span class="sig-paren">(</span><em>img</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/math/metrics.html#min_max_normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.math.metrics.min_max_normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Centre and normalize a given array.</p>
+<p>img: np.ndarray</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="modopt.math.metrics._preprocess_input">
+<code class="descclassname">modopt.math.metrics.</code><code class="descname">_preprocess_input</code><span class="sig-paren">(</span><em>test</em>, <em>ref</em>, <em>mask=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/math/metrics.html#_preprocess_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.math.metrics._preprocess_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper to the metric</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ref</strong> (<em>np.ndarray</em>) – the reference image</li>
+<li><strong>test</strong> (<em>np.ndarray</em>) – the tested image</li>
+<li><strong>mask</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – the mask for the ROI</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Compute the metric only on magnetude.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>ssim</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>, the snr</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="modopt.math.metrics.ssim">
+<code class="descclassname">modopt.math.metrics.</code><code class="descname">ssim</code><span class="sig-paren">(</span><em>test</em>, <em>ref</em>, <em>mask=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/math/metrics.html#ssim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.math.metrics.ssim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structural Similarity (SSIM)</p>
+<p>Calculate the SSIM between a test image and a reference image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ref</strong> (<em>np.ndarray</em>) – the reference image</li>
+<li><strong>test</strong> (<em>np.ndarray</em>) – the tested image</li>
+<li><strong>mask</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – the mask for the ROI</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Compute the metric only on magnetude.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>ssim</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>, the snr</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="modopt.math.metrics.snr">
+<code class="descclassname">modopt.math.metrics.</code><code class="descname">snr</code><span class="sig-paren">(</span><em>test</em>, <em>ref</em>, <em>mask=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/math/metrics.html#snr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.math.metrics.snr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signal-to-Noise Ratio (SNR)</p>
+<p>Calculate the SNR between a test image and a reference image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ref</strong> (<em>np.ndarray</em>) – the reference image</li>
+<li><strong>test</strong> (<em>np.ndarray</em>) – the tested image</li>
+<li><strong>mask</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – the mask for the ROI</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Compute the metric only on magnetude.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>snr</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>, the snr</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="modopt.math.metrics.psnr">
+<code class="descclassname">modopt.math.metrics.</code><code class="descname">psnr</code><span class="sig-paren">(</span><em>test</em>, <em>ref</em>, <em>mask=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/math/metrics.html#psnr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.math.metrics.psnr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Peak Signal-to-Noise Ratio (PSNR)</p>
+<p>Calculate the PSNR between a test image and a reference image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ref</strong> (<em>np.ndarray</em>) – the reference image</li>
+<li><strong>test</strong> (<em>np.ndarray</em>) – the tested image</li>
+<li><strong>mask</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – the mask for the ROI</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Compute the metric only on magnetude.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>psnr</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>, the psnr</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="modopt.math.metrics.mse">
+<code class="descclassname">modopt.math.metrics.</code><code class="descname">mse</code><span class="sig-paren">(</span><em>test</em>, <em>ref</em>, <em>mask=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/math/metrics.html#mse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.math.metrics.mse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mean Squared Error (MSE)</p>
+<p>Calculate the MSE between a test image and a reference image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ref</strong> (<em>np.ndarray</em>) – the reference image</li>
+<li><strong>test</strong> (<em>np.ndarray</em>) – the tested image</li>
+<li><strong>mask</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – the mask for the ROI</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Compute the metric only on magnetude.</p>
+<p>1/N * <a href="#id5"><span class="problematic" id="id6">|</span></a>ref - test|_2</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>mse</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>, the mse</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="modopt.math.metrics.nrmse">
+<code class="descclassname">modopt.math.metrics.</code><code class="descname">nrmse</code><span class="sig-paren">(</span><em>test</em>, <em>ref</em>, <em>mask=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modopt/math/metrics.html#nrmse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modopt.math.metrics.nrmse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return NRMSE</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ref</strong> (<em>np.ndarray</em>) – the reference image</li>
+<li><strong>test</strong> (<em>np.ndarray</em>) – the tested image</li>
+<li><strong>mask</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – the mask for the ROI</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Compute the metric only on magnitude.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>nrmse</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>, the nrmse</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modopt.math.stats.html" class="btn btn-neutral float-right" title="2.1.3.1.4. modopt.math.stats module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modopt.math.matrix.html" class="btn btn-neutral" title="2.1.3.1.2. modopt.math.matrix module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Samuel Farrens.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

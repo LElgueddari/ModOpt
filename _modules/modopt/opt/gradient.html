@@ -1,0 +1,483 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>modopt.opt.gradient &mdash; modopt 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> modopt
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">1. ModOpt Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modopt.html">2. modopt package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../modopt.html#subpackages">2.1. Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.base.html">2.1.1. modopt.base package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.interface.html">2.1.2. modopt.interface package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.math.html">2.1.3. modopt.math package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.opt.html">2.1.4. modopt.opt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.plot.html">2.1.5. modopt.plot package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.signal.html">2.1.6. modopt.signal package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modopt.html#submodules">2.2. Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.info.html">2.2.1. modopt.info module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modopt.html#module-modopt">2.3. Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">modopt</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>modopt.opt.gradient</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for modopt.opt.gradient</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;GRADIENT CLASSES</span>
+
+<span class="sd">This module contains classses for defining algorithm gradients.</span>
+<span class="sd">Based on work by Yinghao Ge and Fred Ngole.</span>
+
+<span class="sd">:Author: Samuel Farrens &lt;samuel.farrens@cea.fr&gt;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">modopt.base.types</span> <span class="k">import</span> <span class="n">check_callable</span><span class="p">,</span> <span class="n">check_float</span><span class="p">,</span> <span class="n">check_npndarray</span>
+
+
+<div class="viewcode-block" id="GradParent"><a class="viewcode-back" href="../../../modopt.opt.gradient.html#modopt.opt.gradient.GradParent">[docs]</a><span class="k">class</span> <span class="nc">GradParent</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Gradient Parent Class</span>
+
+<span class="sd">    This class defines the basic methods that will be inherited by specific</span>
+<span class="sd">    gradient classes</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : np.ndarray</span>
+<span class="sd">        The observed data</span>
+<span class="sd">    op : function</span>
+<span class="sd">        The operator</span>
+<span class="sd">    trans_op : function</span>
+<span class="sd">        The transpose operator</span>
+<span class="sd">    get_grad : function, optional</span>
+<span class="sd">        Method for calculating the gradient (default is None)</span>
+<span class="sd">    cost: function, optional</span>
+<span class="sd">        Method for calculating the cost (default is None)</span>
+<span class="sd">    data_type : type, optional</span>
+<span class="sd">        Expected data type of the input data (default is None)</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from modopt.opt.gradient import GradParent</span>
+<span class="sd">    &gt;&gt;&gt; y = np.arange(9).reshape(3, 3).astype(float)</span>
+<span class="sd">    &gt;&gt;&gt; g = GradParent(y, lambda x: x ** 2, lambda x: x ** 3)</span>
+<span class="sd">    &gt;&gt;&gt; g.op(y)</span>
+<span class="sd">    array([[  0.,   1.,   4.],</span>
+<span class="sd">           [  9.,  16.,  25.],</span>
+<span class="sd">           [ 36.,  49.,  64.]])</span>
+<span class="sd">    &gt;&gt;&gt; g.trans_op(y)</span>
+<span class="sd">    array([[   0.,    1.,    8.],</span>
+<span class="sd">           [  27.,   64.,  125.],</span>
+<span class="sd">           [ 216.,  343.,  512.]])</span>
+<span class="sd">    &gt;&gt;&gt; g.trans_op_op(y)</span>
+<span class="sd">    array([[  0.00000000e+00,   1.00000000e+00,   6.40000000e+01],</span>
+<span class="sd">           [  7.29000000e+02,   4.09600000e+03,   1.56250000e+04],</span>
+<span class="sd">           [  4.66560000e+04,   1.17649000e+05,   2.62144000e+05]])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">trans_op</span><span class="p">,</span> <span class="n">get_grad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cost</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">data_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_grad_data_type</span> <span class="o">=</span> <span class="n">data_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">op</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trans_op</span> <span class="o">=</span> <span class="n">trans_op</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">get_grad</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_grad</span> <span class="o">=</span> <span class="n">get_grad</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="n">cost</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">obs_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Observed Data</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            For invalid input type</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obs_data</span>
+
+    <span class="nd">@obs_data</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">obs_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grad_data_type</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">check_float</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">check_npndarray</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_grad_data_type</span><span class="p">,</span> <span class="n">writeable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_obs_data</span> <span class="o">=</span> <span class="n">data</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">op</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Operator</span>
+
+<span class="sd">        This method defines the operator</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_op</span>
+
+    <span class="nd">@op</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_op</span> <span class="o">=</span> <span class="n">check_callable</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">trans_op</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Transpose Operator</span>
+
+<span class="sd">        This method defines the transpose operator</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trans_op</span>
+
+    <span class="nd">@trans_op</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">trans_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_trans_op</span> <span class="o">=</span> <span class="n">check_callable</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">get_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get Gradient</span>
+
+<span class="sd">        This method defines the calculation of the gradient</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_grad</span>
+
+    <span class="nd">@get_grad</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">get_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_grad</span> <span class="o">=</span> <span class="n">check_callable</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gradient</span>
+
+<span class="sd">        The gradient value</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grad</span>
+
+    <span class="nd">@grad</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grad_data_type</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">check_float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_grad</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Cost Contribution</span>
+
+<span class="sd">        This method defines the proximity operator&#39;s contribution to the total</span>
+<span class="sd">        cost</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost</span>
+
+    <span class="nd">@cost</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cost</span> <span class="o">=</span> <span class="n">check_callable</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GradParent.trans_op_op"><a class="viewcode-back" href="../../../modopt.opt.gradient.html#modopt.opt.gradient.GradParent.trans_op_op">[docs]</a>    <span class="k">def</span> <span class="nf">trans_op_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Transpose Operation of the Operator</span>
+
+<span class="sd">        This method calculates the action of the transpose operator on</span>
+<span class="sd">        the action of the operator on the data</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : np.ndarray</span>
+<span class="sd">            Input data array</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray result</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Implements the following equation:</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \mathbf{H}^T(\mathbf{H}\mathbf{x})</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_op</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="p">(</span><span class="n">data</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="GradBasic"><a class="viewcode-back" href="../../../modopt.opt.gradient.html#modopt.opt.gradient.GradBasic">[docs]</a><span class="k">class</span> <span class="nc">GradBasic</span><span class="p">(</span><span class="n">GradParent</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Basic Gradient Class</span>
+
+<span class="sd">    This class defines the gradient calculation and costs methods for</span>
+<span class="sd">    common inverse problems</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from modopt.opt.gradient import GradBasic</span>
+<span class="sd">    &gt;&gt;&gt; y = np.arange(9).reshape(3, 3).astype(float)</span>
+<span class="sd">    &gt;&gt;&gt; g = GradBasic(y, lambda x: x ** 2, lambda x: x ** 3)</span>
+<span class="sd">    &gt;&gt;&gt; g.get_grad(y)</span>
+<span class="sd">    &gt;&gt;&gt; g.grad</span>
+<span class="sd">    array([[  0.00000000e+00,   0.00000000e+00,   8.00000000e+00],</span>
+<span class="sd">           [  2.16000000e+02,   1.72800000e+03,   8.00000000e+03],</span>
+<span class="sd">           [  2.70000000e+04,   7.40880000e+04,   1.75616000e+05]])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">GradBasic</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_grad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_grad_method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost_method</span>
+
+<div class="viewcode-block" id="GradBasic._get_grad_method"><a class="viewcode-back" href="../../../modopt.opt.gradient.html#modopt.opt.gradient.GradBasic._get_grad_method">[docs]</a>    <span class="k">def</span> <span class="nf">_get_grad_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get the gradient</span>
+
+<span class="sd">        This method calculates the gradient step from the input data</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : np.ndarray</span>
+<span class="sd">            Input data array</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Implements the following equation:</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \nabla F(x) = \mathbf{H}^T(\mathbf{H}\mathbf{x} - \mathbf{y})</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trans_op</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs_data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GradBasic._cost_method"><a class="viewcode-back" href="../../../modopt.opt.gradient.html#modopt.opt.gradient.GradBasic._cost_method">[docs]</a>    <span class="k">def</span> <span class="nf">_cost_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate gradient component of the cost</span>
+
+<span class="sd">        This method returns the l2 norm error of the difference between the</span>
+<span class="sd">        original data and the data obtained after optimisation</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float gradient cost component</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">cost_val</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obs_data</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">**</span> <span class="mi">2</span>
+
+        <span class="k">if</span> <span class="s1">&#39;verbose&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;verbose&#39;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; - DATA FIDELITY (X):&#39;</span><span class="p">,</span> <span class="n">cost_val</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cost_val</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Samuel Farrens.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

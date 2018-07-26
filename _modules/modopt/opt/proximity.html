@@ -1,0 +1,608 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>modopt.opt.proximity &mdash; modopt 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> modopt
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">1. ModOpt Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modopt.html">2. modopt package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../modopt.html#subpackages">2.1. Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.base.html">2.1.1. modopt.base package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.interface.html">2.1.2. modopt.interface package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.math.html">2.1.3. modopt.math package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.opt.html">2.1.4. modopt.opt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.plot.html">2.1.5. modopt.plot package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.signal.html">2.1.6. modopt.signal package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modopt.html#submodules">2.2. Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modopt.info.html">2.2.1. modopt.info module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modopt.html#module-modopt">2.3. Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">modopt</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>modopt.opt.proximity</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for modopt.opt.proximity</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;PROXIMITY OPERATORS</span>
+
+<span class="sd">This module contains classes of proximity operators for optimisation</span>
+
+<span class="sd">:Author: Samuel Farrens &lt;samuel.farrens@cea.fr&gt;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">range</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">modopt.base.types</span> <span class="k">import</span> <span class="n">check_callable</span>
+<span class="kn">from</span> <span class="nn">modopt.signal.noise</span> <span class="k">import</span> <span class="n">thresh</span>
+<span class="kn">from</span> <span class="nn">modopt.signal.svd</span> <span class="k">import</span> <span class="n">svd_thresh</span><span class="p">,</span> <span class="n">svd_thresh_coef</span>
+<span class="kn">from</span> <span class="nn">modopt.signal.positivity</span> <span class="k">import</span> <span class="n">positive</span>
+<span class="kn">from</span> <span class="nn">modopt.math.matrix</span> <span class="k">import</span> <span class="n">nuclear_norm</span>
+<span class="kn">from</span> <span class="nn">modopt.base.transform</span> <span class="k">import</span> <span class="n">cube2matrix</span><span class="p">,</span> <span class="n">matrix2cube</span>
+
+
+<div class="viewcode-block" id="ProximityParent"><a class="viewcode-back" href="../../../modopt.opt.proximity.html#modopt.opt.proximity.ProximityParent">[docs]</a><span class="k">class</span> <span class="nc">ProximityParent</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">cost</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">op</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="n">cost</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">op</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Linear Operator</span>
+
+<span class="sd">        This method defines the linear operator</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_op</span>
+
+    <span class="nd">@op</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_op</span> <span class="o">=</span> <span class="n">check_callable</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Cost Contribution</span>
+
+<span class="sd">        This method defines the proximity operator&#39;s contribution to the total</span>
+<span class="sd">        cost</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost</span>
+
+    <span class="nd">@cost</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cost</span> <span class="o">=</span> <span class="n">check_callable</span><span class="p">(</span><span class="n">method</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="IdentityProx"><a class="viewcode-back" href="../../../modopt.opt.proximity.html#modopt.opt.proximity.IdentityProx">[docs]</a><span class="k">class</span> <span class="nc">IdentityProx</span><span class="p">(</span><span class="n">ProximityParent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Identity Proxmity Operator</span>
+
+<span class="sd">    This is a dummy class that can be used as a proximity operator</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The identity proximity operator contributes 0.0 to the total cost</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.0</span></div>
+
+
+<div class="viewcode-block" id="Positivity"><a class="viewcode-back" href="../../../modopt.opt.proximity.html#modopt.opt.proximity.Positivity">[docs]</a><span class="k">class</span> <span class="nc">Positivity</span><span class="p">(</span><span class="n">ProximityParent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Positivity Proximity Operator</span>
+
+<span class="sd">    This class defines the positivity proximity operator</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">positive</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost_method</span>
+
+<div class="viewcode-block" id="Positivity._cost_method"><a class="viewcode-back" href="../../../modopt.opt.proximity.html#modopt.opt.proximity.Positivity._cost_method">[docs]</a>    <span class="k">def</span> <span class="nf">_cost_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate positivity component of the cost</span>
+
+<span class="sd">        This method returns 0 as the posivituty does not contribute to the</span>
+<span class="sd">        cost.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float zero</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="s1">&#39;verbose&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;verbose&#39;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; - Min (X):&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+        <span class="k">return</span> <span class="mf">0.0</span></div></div>
+
+
+<div class="viewcode-block" id="SparseThreshold"><a class="viewcode-back" href="../../../modopt.opt.proximity.html#modopt.opt.proximity.SparseThreshold">[docs]</a><span class="k">class</span> <span class="nc">SparseThreshold</span><span class="p">(</span><span class="n">ProximityParent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Threshold proximity operator</span>
+
+<span class="sd">    This class defines the threshold proximity operator</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    linear : class</span>
+<span class="sd">        Linear operator class</span>
+<span class="sd">    weights : np.ndarray</span>
+<span class="sd">        Input array of weights</span>
+<span class="sd">    thresh_type : str {&#39;hard&#39;, &#39;soft&#39;}, optional</span>
+<span class="sd">        Threshold type (default is &#39;soft&#39;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">linear</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">thresh_type</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_linear</span> <span class="o">=</span> <span class="n">linear</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_thresh_type</span> <span class="o">=</span> <span class="n">thresh_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_op_method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost_method</span>
+
+<div class="viewcode-block" id="SparseThreshold._op_method"><a class="viewcode-back" href="../../../modopt.opt.proximity.html#modopt.opt.proximity.SparseThreshold._op_method">[docs]</a>    <span class="k">def</span> <span class="nf">_op_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">extra_factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Operator Method</span>
+
+<span class="sd">        This method returns the input data thresholded by the weights</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : np.ndarray</span>
+<span class="sd">            Input data array</span>
+<span class="sd">        extra_factor : float</span>
+<span class="sd">            Additional multiplication factor</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray thresholded data</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">threshold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">*</span> <span class="n">extra_factor</span>
+
+        <span class="k">return</span> <span class="n">thresh</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_thresh_type</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SparseThreshold._cost_method"><a class="viewcode-back" href="../../../modopt.opt.proximity.html#modopt.opt.proximity.SparseThreshold._cost_method">[docs]</a>    <span class="k">def</span> <span class="nf">_cost_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate sparsity component of the cost</span>
+
+<span class="sd">        This method returns the l1 norm error of the weighted wavelet</span>
+<span class="sd">        coefficients</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float sparsity cost component</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">cost_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear</span><span class="o">.</span><span class="n">op</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+
+        <span class="k">if</span> <span class="s1">&#39;verbose&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;verbose&#39;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; - L1 NORM (X):&#39;</span><span class="p">,</span> <span class="n">cost_val</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cost_val</span></div></div>
+
+
+<div class="viewcode-block" id="LowRankMatrix"><a class="viewcode-back" href="../../../modopt.opt.proximity.html#modopt.opt.proximity.LowRankMatrix">[docs]</a><span class="k">class</span> <span class="nc">LowRankMatrix</span><span class="p">(</span><span class="n">ProximityParent</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Low-rank proximity operator</span>
+
+<span class="sd">    This class defines the low-rank proximity operator</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    thresh : float</span>
+<span class="sd">        Threshold value</span>
+<span class="sd">    treshold_type : str {&#39;hard&#39;, &#39;soft&#39;}</span>
+<span class="sd">        Threshold type (options are &#39;hard&#39; or &#39;soft&#39;)</span>
+<span class="sd">    lowr_type : str {&#39;standard&#39;, &#39;ngole&#39;}</span>
+<span class="sd">        Low-rank implementation (options are &#39;standard&#39; or &#39;ngole&#39;)</span>
+<span class="sd">    operator : class</span>
+<span class="sd">        Operator class (&#39;ngole&#39; only)</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from modopt.opt.proximity import LowRankMatrix</span>
+<span class="sd">    &gt;&gt;&gt; a = np.arange(9).reshape(3, 3).astype(float)</span>
+<span class="sd">    &gt;&gt;&gt; inst = LowRankMatrix(10.0, thresh_type=&#39;hard&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; inst.op(a)</span>
+<span class="sd">    array([[[  2.73843189,   3.14594066,   3.55344943],</span>
+<span class="sd">            [  3.9609582 ,   4.36846698,   4.77597575],</span>
+<span class="sd">            [  5.18348452,   5.59099329,   5.99850206]],</span>
+
+<span class="sd">           [[  8.07085295,   9.2718846 ,  10.47291625],</span>
+<span class="sd">            [ 11.67394789,  12.87497954,  14.07601119],</span>
+<span class="sd">            [ 15.27704284,  16.47807449,  17.67910614]]])</span>
+<span class="sd">    &gt;&gt;&gt; inst.cost(a, verbose=True)</span>
+<span class="sd">     - NUCLEAR NORM (X): 469.391329425</span>
+<span class="sd">    469.39132942464983</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thresh</span><span class="p">,</span> <span class="n">thresh_type</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span><span class="p">,</span>
+                 <span class="n">lowr_type</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="p">,</span> <span class="n">operator</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresh</span> <span class="o">=</span> <span class="n">thresh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresh_type</span> <span class="o">=</span> <span class="n">thresh_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lowr_type</span> <span class="o">=</span> <span class="n">lowr_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operator</span> <span class="o">=</span> <span class="n">operator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_op_method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost_method</span>
+
+<div class="viewcode-block" id="LowRankMatrix._op_method"><a class="viewcode-back" href="../../../modopt.opt.proximity.html#modopt.opt.proximity.LowRankMatrix._op_method">[docs]</a>    <span class="k">def</span> <span class="nf">_op_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">extra_factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Operator</span>
+
+<span class="sd">        This method returns the input data after the singular values have been</span>
+<span class="sd">        thresholded</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : np.ndarray</span>
+<span class="sd">            Input data array</span>
+<span class="sd">        extra_factor : float</span>
+<span class="sd">            Additional multiplication factor</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray SVD thresholded data</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Update threshold with extra factor.</span>
+        <span class="n">threshold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thresh</span> <span class="o">*</span> <span class="n">extra_factor</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lowr_type</span> <span class="o">==</span> <span class="s1">&#39;standard&#39;</span><span class="p">:</span>
+            <span class="n">data_matrix</span> <span class="o">=</span> <span class="n">svd_thresh</span><span class="p">(</span><span class="n">cube2matrix</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">threshold</span><span class="p">,</span>
+                                     <span class="n">thresh_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">thresh_type</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">lowr_type</span> <span class="o">==</span> <span class="s1">&#39;ngole&#39;</span><span class="p">:</span>
+            <span class="n">data_matrix</span> <span class="o">=</span> <span class="n">svd_thresh_coef</span><span class="p">(</span><span class="n">cube2matrix</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">operator</span><span class="p">,</span>
+                                          <span class="n">threshold</span><span class="p">,</span>
+                                          <span class="n">thresh_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">thresh_type</span><span class="p">)</span>
+
+        <span class="n">new_data</span> <span class="o">=</span> <span class="n">matrix2cube</span><span class="p">(</span><span class="n">data_matrix</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+
+        <span class="c1"># Return updated data.</span>
+        <span class="k">return</span> <span class="n">new_data</span></div>
+
+<div class="viewcode-block" id="LowRankMatrix._cost_method"><a class="viewcode-back" href="../../../modopt.opt.proximity.html#modopt.opt.proximity.LowRankMatrix._cost_method">[docs]</a>    <span class="k">def</span> <span class="nf">_cost_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate low-rank component of the cost</span>
+
+<span class="sd">        This method returns the nuclear norm error of the deconvolved data in</span>
+<span class="sd">        matrix form</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float low-rank cost component</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">cost_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thresh</span> <span class="o">*</span> <span class="n">nuclear_norm</span><span class="p">(</span><span class="n">cube2matrix</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+        <span class="k">if</span> <span class="s1">&#39;verbose&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;verbose&#39;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; - NUCLEAR NORM (X):&#39;</span><span class="p">,</span> <span class="n">cost_val</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cost_val</span></div></div>
+
+
+<div class="viewcode-block" id="ProximityCombo"><a class="viewcode-back" href="../../../modopt.opt.proximity.html#modopt.opt.proximity.ProximityCombo">[docs]</a><span class="k">class</span> <span class="nc">ProximityCombo</span><span class="p">(</span><span class="n">ProximityParent</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Proximity Combo</span>
+
+<span class="sd">    This class defines a combined proximity operator</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    operators : list</span>
+<span class="sd">        List of proximity operator class instances</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from modopt.opt.proximity import ProximityCombo, ProximityParent</span>
+<span class="sd">    &gt;&gt;&gt; a = ProximityParent(lambda x: x ** 2, lambda x: x ** 3)</span>
+<span class="sd">    &gt;&gt;&gt; b = ProximityParent(lambda x: x ** 4, lambda x: x ** 5)</span>
+<span class="sd">    &gt;&gt;&gt; c = ProximityCombo([a, b])</span>
+<span class="sd">    &gt;&gt;&gt; c.op([2, 2])</span>
+<span class="sd">    array([4, 16], dtype=object)</span>
+<span class="sd">    &gt;&gt;&gt; c.cost([2, 2])</span>
+<span class="sd">    40</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
+
+        <span class="n">operators</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_operators</span><span class="p">(</span><span class="n">operators</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operators</span> <span class="o">=</span> <span class="n">operators</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_op_method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost_method</span>
+
+<div class="viewcode-block" id="ProximityCombo._check_operators"><a class="viewcode-back" href="../../../modopt.opt.proximity.html#modopt.opt.proximity.ProximityCombo._check_operators">[docs]</a>    <span class="k">def</span> <span class="nf">_check_operators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operators</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Check Inputs</span>
+
+<span class="sd">        This method cheks that the input operators and weights are correctly</span>
+<span class="sd">        formatted</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        operators : list, tuple or np.ndarray</span>
+<span class="sd">            List of linear operator class instances</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.array operators</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        TypeError</span>
+<span class="sd">            For invalid input type</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">operators</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Invalid input type, operators must be a list, &#39;</span>
+                            <span class="s1">&#39;tuple or numpy array.&#39;</span><span class="p">)</span>
+
+        <span class="n">operators</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operators</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">operators</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Operator list is empty.&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">operator</span> <span class="ow">in</span> <span class="n">operators</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="s1">&#39;op&#39;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Operators must contain &quot;op&quot; method.&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="s1">&#39;cost&#39;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Operators must contain &quot;cost&quot; method.&#39;</span><span class="p">)</span>
+            <span class="n">operator</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">check_callable</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">op</span><span class="p">)</span>
+            <span class="n">operator</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="n">check_callable</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">cost</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">operators</span></div>
+
+<div class="viewcode-block" id="ProximityCombo._op_method"><a class="viewcode-back" href="../../../modopt.opt.proximity.html#modopt.opt.proximity.ProximityCombo._op_method">[docs]</a>    <span class="k">def</span> <span class="nf">_op_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">extra_factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Operator</span>
+
+<span class="sd">        This method returns the result of applying all of the proximity</span>
+<span class="sd">        operators to the data</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : np.ndarray</span>
+<span class="sd">            Input data array</span>
+<span class="sd">        extra_factor : float</span>
+<span class="sd">            Additional multiplication factor</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray result</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="p">)):</span>
+            <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">op</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">extra_factor</span><span class="o">=</span><span class="n">extra_factor</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="ProximityCombo._cost_method"><a class="viewcode-back" href="../../../modopt.opt.proximity.html#modopt.opt.proximity.ProximityCombo._cost_method">[docs]</a>    <span class="k">def</span> <span class="nf">_cost_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate combined proximity operator components of the cost</span>
+
+<span class="sd">        This method returns the sum of the cost components from each of the</span>
+<span class="sd">        proximity operators</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float combinded cost components</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">operator</span><span class="o">.</span><span class="n">cost</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="k">for</span> <span class="n">operator</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span>
+                       <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Samuel Farrens.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
